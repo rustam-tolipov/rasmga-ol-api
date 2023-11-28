@@ -8,7 +8,7 @@ module Api
       # GET /posts/1/comments
       def index
         @comments = @post.comments.all
-        render json: @comments
+        render json: @comments, status: :ok
       end
     
       # POST /posts/1/comments
