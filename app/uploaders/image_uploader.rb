@@ -4,9 +4,9 @@ class ImageUploader < CarrierWave::Uploader::Base
   # include CarrierWave::MiniMagick
   include Cloudinary::CarrierWave
 
-  def public_id
-    return "my_folder/" + Random.rand(1..1000).to_s
-  end 
+  # def public_id
+  #   return "my_folder/" + Random.rand(1..1000).to_s
+  # end 
 
   # Choose what kind of storage to use for this uploader:
   # storage :file
@@ -33,9 +33,22 @@ class ImageUploader < CarrierWave::Uploader::Base
   # Process files as they are uploaded:
   # process scale: [200, 300]
   #
-  # def scale(width, height)
-  #   # do something
-  # end
+
+  version :standard do
+    process resize_to_fill: [1080, 1080, :center]
+  end
+
+  version :vertical do
+    process resize_to_fill: [1080, 1350, :center]
+  end
+
+  version :horizontal do
+    process resize_to_fill: [1080, 566, :center]
+  end
+
+  version :reels do
+    process resize_to_fill: [540, 960, :center]
+  end
 
   # Create different versions of your uploaded files:
   

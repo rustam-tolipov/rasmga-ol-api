@@ -1,5 +1,5 @@
 class PostSerializer < ActiveModel::Serializer
-  attributes :id, :caption, :image, :user_id, :created_at, :username, :avatar, :is_followed
+  attributes :id, :caption, :image, :user_id, :created_at, :username, :avatar, :is_followed, :size, :is_video, :likes_count, :comments_count
 
   DEFAULT_AVATAR = RANDOM_AVATAR
 

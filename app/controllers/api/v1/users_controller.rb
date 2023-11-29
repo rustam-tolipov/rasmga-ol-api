@@ -17,9 +17,13 @@ module Api
         render json: @users, status: :ok
       end
 
+      def notifications
+        @notifications = User.first.notifications
+        render json: @notifications, status: :ok
+      end
 
       def me
-        render json: User.first, serializer: UserSerializer, status: :ok
+      render json: User.first, serializer: UserSerializer, status: :ok
       end
 
       def show

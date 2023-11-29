@@ -16,8 +16,18 @@ module Api
         @comment = Comment.new(comment_params)
         @comment.user_id = User.first.id
         @comment.post_id = @post.id
+
+        username = User.first.username
+
         
         if @comment.save
+          User.first.create_notification(
+            {
+              message: "#{username} commented on your post: #{@comment.content}",
+              user_id: @post.user_id,
+              post_id: @post.id
+            }
+          )
           render json: @comment, status: :created
         else
           render_error(@comment, :unprocessable_entity)
@@ -37,6 +47,14 @@ module Api
         else
           @like = @comment.likes.new(user_id: User.first.id)
           if @like.save
+            @username = User.first.username
+            User.first.create_notification(
+              {
+                message: "#{@username} liked your comment: #{@comment.content}",
+                user_id: @comment.user_id,
+                post_id: @comment.post_id
+              }
+            )
             render json: {
               message: "❤️"
             }, status: :created

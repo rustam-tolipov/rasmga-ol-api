@@ -25,6 +25,13 @@ module Api
         puts "👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻 Creating... 👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻"
 
         if @post.save
+          User.first.create_notification(
+            {
+              message: "New post created: #{@post}",
+              user_id: @post.user_id,
+              post_id: @post.id
+            }
+          )
           render json: @post, status: :created
         else
           render_error(@post, :unprocessable_entity, "Post not created")
@@ -53,6 +60,11 @@ module Api
         else
           @like = @post.likes.new(user_id: User.first.id)
           if @like.save
+            User.first.create_notification({
+              message: "#{User.first.username} liked your post",
+              user_id: @post.user_id,
+              post_id: @post.id
+            })
             render json: {
               message: "❤️"
             }, status: :created
@@ -106,7 +118,7 @@ module Api
         end
     
         def post_params
-          params.permit(:caption, :image, :user_id)
+          params.permit(:caption, :image, :user_id, :is_video, :size)
         end
 
         # Render error message
