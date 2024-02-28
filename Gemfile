@@ -11,8 +11,6 @@ gem "dockerfile-rails", ">= 1.6", group: :development
 gem "dotenv-rails"
 gem "devise"
 gem "devise-jwt"
-gem "factory_bot_rails", group: [:development, :test]
-gem "faker", group: [:development, :test]
 gem "image_processing", "~> 1.2"
 gem 'active_model_serializers'
 gem "pg", "~> 1.1"
