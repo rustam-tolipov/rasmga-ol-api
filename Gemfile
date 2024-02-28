@@ -15,7 +15,7 @@ gem "factory_bot_rails", group: [:development, :test]
 gem "faker", group: [:development, :test]
 gem "image_processing", "~> 1.2"
 gem 'active_model_serializers'
-gem 'pg', '~> 1.5', '>= 1.5.5'
+gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "rack-cors"
 gem "rails", "~> 7.0.4"

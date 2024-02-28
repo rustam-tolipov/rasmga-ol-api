@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %> # This is the line that was added by Render
   database: rasmga_ol_api_production
   username: rasmga_ol_api
   password: <%= ENV["RASMGA_OL_API_DATABASE_PASSWORD"] %>
