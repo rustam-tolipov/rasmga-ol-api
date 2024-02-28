@@ -1,14 +1,14 @@
-require_relative '../app/helpers/seeds_helper.rb'
-include SeedsHelper
+# require_relative '../app/helpers/seeds_helper.rb'
+# include SeedsHelper
 
-# User.destroy_all
-# Post.destroy_all
-# Comment.destroy_all
-# Like.destroy_all
-# Follow.destroy_all
+# # User.destroy_all
+# # Post.destroy_all
+# # Comment.destroy_all
+# # Like.destroy_all
+# # Follow.destroy_all
 
-CREATING
+# CREATING
 
-random_users = 1.times { create_user }
+# random_users = 1.times { create_user }
 
-SEEDED
+# SEEDED
