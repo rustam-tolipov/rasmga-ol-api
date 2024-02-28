@@ -3,7 +3,7 @@ module Api
     class UsersController < ApplicationController
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
       # before_action :authenticate_user!, only: [:me, :show, :update, :follow, :unfollow, :following, :followers]
-      before_action :set_user, only: [:update, :destroy, :follow, :unfollow, :followers, :following]
+      before_action :set_user, only: [:destroy, :follow, :unfollow, :followers, :following]
       before_action :set_user_by_username, only: [:show_by_username, :user_posts]
 
       def highlights
@@ -48,6 +48,7 @@ module Api
       end
 
       def update
+        @user = User.first
         if @user.update(user_params)
           render json: @user, serializer: UserSerializer, status: :ok
         else
@@ -92,7 +93,9 @@ module Api
       private
 
       def set_user
-        @user = User.find(params[:id]) || User.find(params[:username])
+        username = CGI.unescape(params[:username])
+
+        @user = User.find(params[:id]) || User.find_by(username: username)
       end
 
       def set_user_by_username

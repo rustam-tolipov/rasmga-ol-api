@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       get '/search', to: 'users#search'
       get '/suggestions', to: 'suggestions#index'
       get '/highlights', to: 'users#highlights'
-      get '/:username/posts', to: 'users#user_posts', as: :user_posts
+      get '/:username/posts', to: 'users#user_posts', as: :user_posts, constraints: { username: /[^\/]+/ }
       
       resources :posts do
         resources :comments
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
         get '/auth/me', to: 'api/v1/users#me', as: :user_root
         get '/auth/users', to: 'api/v1/users#index', as: :users
         get '/auth/users/:id', to: 'api/v1/users#show', as: :user
-        get '/users/show/:username', to: 'api/v1/users#show_by_username', as: :show_by_username
+        get '/users/show/:username', to: 'api/v1/users#show_by_username', as: :show_by_username, constraints: { username: /[^\/]+/ }
         get '/users/:id/posts', to: 'api/v1/users#user_posts', as: :user_posts
         put '/auth/edit', to: 'api/v1/users#update', as: :update_user
         delete '/auth/users', to: 'api/v1/users#destroy', as: :destroy_user

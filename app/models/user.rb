@@ -16,6 +16,8 @@ class User < ApplicationRecord
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
   has_many :followers, through: :following_users
 
+  validates :username, presence: true, uniqueness: true
+
   scope :search, ->(query) { query.present? ? where("username ILIKE ? OR first_name ILIKE ? OR last_name ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%") : none }
 
   scope :following?, ->(user) { followees.include?(user) }
