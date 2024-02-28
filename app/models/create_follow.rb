@@ -1,0 +1,2 @@
+class CreateFollow < ApplicationRecord
+end
