@@ -93,9 +93,7 @@ module Api
       private
 
       def set_user
-        username = CGI.unescape(params[:username])
-
-        @user = User.find(params[:id]) || User.find_by(username: username)
+        @user = User.find(params[:id]) || User.find_by(username: params[:username])
       end
 
       def set_user_by_username
