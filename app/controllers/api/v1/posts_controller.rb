@@ -23,11 +23,12 @@ module Api
         @post.user = User.first
 
         puts "👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻 Creating... 👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻"
+        user = User.find_by(id: @post.user_id)
 
         if @post.save
           User.first.create_notification(
             {
-              message: "New post created: #{@post}",
+              message: "#{user.username} created a new post",
               user_id: @post.user_id,
               post_id: @post.id
             }

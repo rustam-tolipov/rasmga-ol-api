@@ -34,6 +34,10 @@ class ImageUploader < CarrierWave::Uploader::Base
   # process scale: [200, 300]
   #
 
+  version :thumbnail do
+    process resize_to_fill: [300, 300, :center]
+  end
+
   version :standard do
     process resize_to_fill: [1080, 1080, :center]
   end
