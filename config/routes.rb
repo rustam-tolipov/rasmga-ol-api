@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get '/highlights', to: 'users#highlights'
       get '/:username/posts', to: 'users#user_posts', as: :user_posts, constraints: { username: /[^\/]+/ }
       get '/notifications', to: 'users#notifications'
+      get '/home', to: 'posts#home'
 
       resources :posts do
         resources :comments

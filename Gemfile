@@ -13,6 +13,10 @@ gem "devise"
 gem "devise-jwt"
 gem "image_processing", "~> 1.2"
 gem 'active_model_serializers'
+gem 'kaminari' 
+gem 'pager_api'
+gem "api-pagination"
+gem 'pagy'
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "rack-cors"

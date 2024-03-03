@@ -11,6 +11,11 @@ module Api
         render json: @posts
       end
 
+      def home
+        objects_to_display = Post.page(params[:page] ? params[:page].to_i : 1).per(params[:per_page] ? params[:per_page].to_i : 1)     
+        render json: { data: ActiveModelSerializers::SerializableResource.new(objects_to_display, each_serializer: PostSerializer), meta: pagination_meta(objects_to_display) }, status: :ok
+      end
+
       # GET /posts/1
       def show
         @post = Post.find(params[:id])
@@ -127,6 +132,16 @@ module Api
           render json: {
             errors: object.errors.full_messages
           }, status: status
+        end
+
+        def pagination_meta(object)
+          {
+            current_page: object.current_page,
+            next_page: object.next_page,
+            prev_page: object.prev_page, # use object.previous_page when using will_paginate
+            total_pages: object.total_pages,
+            total_count: object.total_count
+          }
         end
     end
   end
