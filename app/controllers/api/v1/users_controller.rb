@@ -2,7 +2,7 @@ module Api
   module V1
     class UsersController < ApplicationController
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
-      before_action :authenticate_user!, only: [:me, :show, :update, :follow, :unfollow, :following, :followers]
+      before_action :authenticate_user!, only: [:me, :show, :update, :follow, :unfollow, :following, :followers, :notifications]
       before_action :set_user, only: [:destroy, :follow, :unfollow, :followers, :following]
       before_action :set_user_by_username, only: [:show_by_username, :user_posts]
 
@@ -10,7 +10,7 @@ module Api
         @users = User.all.where.not(id: current_user.id).limit(12).order(created_at: :desc).map do |user|
           {
             username: user.username,
-            avatar: user.avatar.url ? user.avatar.url : UserSerializer::DEFAULT_AVATAR
+            avatar: user.avatar.url ? user.avatar.url : "https://ui-avatars.com/api/?name=#{user.username}&background=random"
           }
         end
 

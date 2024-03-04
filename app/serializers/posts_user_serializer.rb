@@ -1,8 +1,6 @@
 class PostsUserSerializer < ActiveModel::Serializer
   attributes :user
 
-  DEFAULT_AVATAR = 'https://res-2.cloudinary.com/dhatgaadw/image/upload/v1661765174/e0eiopj9eqt5dwnt5n2v.jpg'
-
   def comment_user
     {
       id: object.user.id,

@@ -36,15 +36,6 @@ module Api
         user = User.find_by(id: @post.user_id)
 
         if @post.save
-          if @post.user_id != current_user.id 
-            user.create_notification(
-              {
-                message: "#{user.username} created a new post",
-                user_id: @post.user_id,
-                post_id: @post.id
-              }
-            )
-          end
           render json: @post, status: :created
         else
           render_error(@post, :unprocessable_entity, "Post not created")
@@ -73,11 +64,9 @@ module Api
         else
           @like = @post.likes.new(user_id: current_user.id)
           if @like.save
-            current_user.create_notification({
-              message: "#{current_user.username} liked your post",
-              user_id: @post.user_id,
-              post_id: @post.id
-            })
+            if @post.user_id != current_user.id
+              notify_user("#{current_user.username} liked your post", @post)
+            end
             render json: {
               message: "❤️"
             }, status: :created
@@ -108,21 +97,16 @@ module Api
       # DELETE /posts/1
       def destroy
         # Only the post owner can delete the post
-        # if @post.user_id == current_user.id
-        #   @post.destroy
-        #   render json: {
-        #     message: "Post deleted"
-        #   }, status: :ok
-        # else
-        #   render json: {
-        #     message: "You can't delete this post"
-        #   }, status: :bad_request
-        # end
-
-        @post.destroy
-        render json: {
-          message: "Post deleted"
-        }, status: :ok
+        if @post.user_id == current_user.id
+          @post.destroy
+          render json: {
+            message: "Post deleted"
+          }, status: :ok
+        else
+          render json: {
+            message: "You can't delete this post"
+          }, status: :bad_request
+        end
       end
     
       private

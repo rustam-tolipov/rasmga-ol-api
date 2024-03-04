@@ -17,7 +17,7 @@ class SuggestionSerializer < ActiveModel::Serializer
     if object.avatar.url.present?
       object.avatar.url
     else
-      DEFAULT_AVATAR
+      "https://ui-avatars.com/api/?name=#{object.username}&background=random"
     end
   end
 end

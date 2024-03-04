@@ -46,6 +46,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_01_121118) do
     t.boolean "read", default: false
     t.integer "post_id"
     t.integer "comment_id"
+    t.string "thumb"
+    t.integer "sender_id"
+    t.integer "receiver_id"
+    t.string "username"
+    t.string "avatar"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_notifications_on_user_id"
