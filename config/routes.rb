@@ -13,6 +13,9 @@ Rails.application.routes.draw do
       resources :posts do
         resources :comments
       end
+
+      get '/reels', to: 'posts#reels'
+
       post '/posts/:id/like', to: 'posts#like', as: :like
       delete '/posts/:id/like', to: 'posts#unlike', as: :unlike
 

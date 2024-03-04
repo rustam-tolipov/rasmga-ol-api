@@ -11,6 +11,11 @@ module Api
         render json: @posts
       end
 
+      def reels
+        @posts = Post.all.order(created_at: :desc).where(is_video: true)
+        render json: @posts, status: :ok
+      end
+
       def home
         objects_to_display = Post.page(params[:page] ? params[:page].to_i : 1).per(params[:per_page] ? params[:per_page].to_i : 1).order(created_at: :desc)  
         render json: { data: ActiveModelSerializers::SerializableResource.new(objects_to_display, each_serializer: PostSerializer), meta: pagination_meta(objects_to_display) }, status: :ok
