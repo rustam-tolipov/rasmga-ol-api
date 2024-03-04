@@ -1,7 +1,7 @@
 module Api
   module V1
     class PostsController < ApplicationController
-      # before_action :authenticate_user!, only: [:create, :update, :destroy]
+      before_action :authenticate_user!, only: [:create, :update, :destroy]
       before_action :set_post, only: [:show, :update, :destroy, :like, :unlike]
     
       # GET /posts
@@ -12,7 +12,7 @@ module Api
       end
 
       def home
-        objects_to_display = Post.page(params[:page] ? params[:page].to_i : 1).per(params[:per_page] ? params[:per_page].to_i : 1)     
+        objects_to_display = Post.page(params[:page] ? params[:page].to_i : 1).per(params[:per_page] ? params[:per_page].to_i : 1).order(created_at: :desc)  
         render json: { data: ActiveModelSerializers::SerializableResource.new(objects_to_display, each_serializer: PostSerializer), meta: pagination_meta(objects_to_display) }, status: :ok
       end
 
@@ -25,19 +25,21 @@ module Api
       # POST /posts
       def create
         @post = Post.new(post_params)
-        @post.user = User.first
+        @post.user = current_user
 
         puts "👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻 Creating... 👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻👨🏻‍💻"
         user = User.find_by(id: @post.user_id)
 
         if @post.save
-          User.first.create_notification(
-            {
-              message: "#{user.username} created a new post",
-              user_id: @post.user_id,
-              post_id: @post.id
-            }
-          )
+          if @post.user_id != current_user.id 
+            user.create_notification(
+              {
+                message: "#{user.username} created a new post",
+                user_id: @post.user_id,
+                post_id: @post.id
+              }
+            )
+          end
           render json: @post, status: :created
         else
           render_error(@post, :unprocessable_entity, "Post not created")
@@ -54,7 +56,7 @@ module Api
       end
 
       def already_liked?(post)
-        post.likes.where(user_id: User.first.id).exists?
+        post.likes.where(user_id: current_user.id).exists?
       end
 
       # POST /posts/1/like
@@ -64,10 +66,10 @@ module Api
             message: "You already liked this post"
           }, status: :bad_request
         else
-          @like = @post.likes.new(user_id: User.first.id)
+          @like = @post.likes.new(user_id: current_user.id)
           if @like.save
-            User.first.create_notification({
-              message: "#{User.first.username} liked your post",
+            current_user.create_notification({
+              message: "#{current_user.username} liked your post",
               user_id: @post.user_id,
               post_id: @post.id
             })
@@ -87,7 +89,7 @@ module Api
             message: "You haven't liked this post yet"
           }, status: :bad_request
         else
-          @like = @post.likes.where(user_id: User.first.id).first
+          @like = @post.likes.where(user_id: current_user.id).first
           if @like.destroy
             render json: {
               message: "💔"
@@ -101,7 +103,7 @@ module Api
       # DELETE /posts/1
       def destroy
         # Only the post owner can delete the post
-        # if @post.user_id == User.first.id
+        # if @post.user_id == current_user.id
         #   @post.destroy
         #   render json: {
         #     message: "Post deleted"

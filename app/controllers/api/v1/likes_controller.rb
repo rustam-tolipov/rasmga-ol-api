@@ -1,7 +1,7 @@
 module Api
   module V1
     class LikesController < ApplicationController
-      # before_action :authenticate_user!, only: [:create, :update, :destroy]
+      before_action :authenticate_user!, only: [:create, :update, :destroy]
       before_action :set_like, only: [:show, :update, :destroy]
       
       # GET /likes/1
@@ -12,7 +12,7 @@ module Api
       # POST /likes
       def create
         @like = Like.new(like_params)
-        @like.user = User.first
+        @like.user = current_user
 
         if @like.save
           render json: @like, status: :created

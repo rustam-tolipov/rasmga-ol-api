@@ -2,12 +2,12 @@ module Api
   module V1
     class UsersController < ApplicationController
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
-      # before_action :authenticate_user!, only: [:me, :show, :update, :follow, :unfollow, :following, :followers]
+      before_action :authenticate_user!, only: [:me, :show, :update, :follow, :unfollow, :following, :followers]
       before_action :set_user, only: [:destroy, :follow, :unfollow, :followers, :following]
       before_action :set_user_by_username, only: [:show_by_username, :user_posts]
 
       def highlights
-        @users = User.all.limit(12).order(created_at: :desc).map do |user|
+        @users = User.all.where.not(id: current_user.id).limit(12).order(created_at: :desc).map do |user|
           {
             username: user.username,
             avatar: user.avatar.url ? user.avatar.url : UserSerializer::DEFAULT_AVATAR
@@ -18,12 +18,12 @@ module Api
       end
 
       def notifications
-        @notifications = User.first.notifications
+        @notifications = current_user.notifications
         render json: @notifications, status: :ok
       end
 
       def me
-      render json: User.first, serializer: UserSerializer, status: :ok
+        render json: current_user, serializer: UserSerializer, status: :ok
       end
 
       def show
@@ -52,7 +52,7 @@ module Api
       end
 
       def update
-        @user = User.first
+        @user = current_user
         if @user.update(user_params)
           render json: @user, serializer: UserSerializer, status: :ok
         else
@@ -61,7 +61,7 @@ module Api
       end
 
       def already_followed?(user)
-        User.first.followees.include?(user)
+        current_user.followees.include?(user)
       end
 
       def follow
@@ -70,14 +70,14 @@ module Api
             message: "You are already following this user"
           }, status: :bad_request
         else
-          User.first.followees << @user
+          current_user.followees << @user
           render json: @user, serializer: UserSerializer, status: :ok
         end
       end
 
       def unfollow
         if already_followed?(@user)
-          User.first.followees.delete(@user)
+          current_user.followees.delete(@user)
           render json: @user, serializer: UserSerializer, status: :ok
         else
           render json: {

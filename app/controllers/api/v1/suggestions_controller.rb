@@ -5,7 +5,7 @@ module Api
       SUGGESTED_USERS_LIMIT = 5
 
       def index
-        @users = User.all.sample(SUGGESTED_USERS_LIMIT).reject { |user| user.id == User.first.id || User.first.followees.include?(user) }
+        @users = User.all.limit(SUGGESTED_USERS_LIMIT).order(created_at: :desc).reject { |user| user.id == current_user.id || current_user.followees.include?(user) }
         render json: @users, each_serializer: SuggestionSerializer, status: :ok
       end
     end

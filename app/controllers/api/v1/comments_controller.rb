@@ -1,7 +1,7 @@
 module Api
   module V1
     class CommentsController < ApplicationController
-      # before_action :authenticate_user!, only: [:create, :destroy]
+      before_action :authenticate_user!, only: [:create, :destroy]
       before_action :set_comment, only: [:update, :destroy, :like, :unlike]
       before_action :set_post, only: [:index, :create]
 
@@ -14,14 +14,14 @@ module Api
       # POST /posts/1/comments
       def create
         @comment = Comment.new(comment_params)
-        @comment.user_id = User.first.id
+        @comment.user_id = current_user.id
         @comment.post_id = @post.id
 
-        username = User.first.username
+        username = current_user.username
 
         
         if @comment.save
-          User.first.create_notification(
+          current_user.create_notification(
             {
               message: "#{username} commented on your post: #{@comment.content}",
               user_id: @post.user_id,
@@ -35,7 +35,7 @@ module Api
       end
 
       def already_liked?(comment)
-        comment.likes.where(user_id: User.first.id).exists?
+        comment.likes.where(user_id: current_user.id).exists?
       end
 
       # POST /posts/1/comments/1/like
@@ -45,10 +45,10 @@ module Api
             message: "You already liked this comment"
           }, status: :bad_request
         else
-          @like = @comment.likes.new(user_id: User.first.id)
+          @like = @comment.likes.new(user_id: current_user.id)
           if @like.save
-            @username = User.first.username
-            User.first.create_notification(
+            @username = current_user.username
+            current_user.create_notification(
               {
                 message: "#{@username} liked your comment: #{@comment.content}",
                 user_id: @comment.user_id,
@@ -67,7 +67,7 @@ module Api
       # POST /posts/1/comments/1/unlike
       def unlike
         if already_liked?(@comment)
-          @like = @comment.likes.find_by(user_id: User.first.id)
+          @like = @comment.likes.find_by(user_id: current_user.id)
           @like.destroy
           render json: {
             message: "💔"

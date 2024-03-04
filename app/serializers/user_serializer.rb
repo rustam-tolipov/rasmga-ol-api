@@ -24,6 +24,6 @@ class UserSerializer < ActiveModel::Serializer
   end
 
   def is_followed
-    User.first.followees.include?(object)
+    current_user.followees.include?(object)
   end
 end

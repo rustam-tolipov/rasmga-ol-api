@@ -16,6 +16,6 @@ class PostSerializer < ActiveModel::Serializer
   end
 
   def is_followed
-    User.first.followees.include?(object.user)
+    true
   end
 end
