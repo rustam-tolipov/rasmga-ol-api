@@ -42,7 +42,7 @@ module Api
 
       # Get /users/1/posts
       def user_posts
-        @posts = @user.posts
+        @posts = @user.posts.order(created_at: :desc)
         render json: @posts, each_serializer: PostSerializer, status: :ok
       end
 
