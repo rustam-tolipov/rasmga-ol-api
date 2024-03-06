@@ -8,7 +8,8 @@ module Api
 
       def respond_with(resource, _opts = {})
         if resource.persisted?
-
+          UserMailer.welcome_email(resource).deliver_now
+          
           render json: resource, status: :ok
         else
           render json: {
