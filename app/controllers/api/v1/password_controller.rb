@@ -10,7 +10,7 @@ module Api
     
         if user.present?
           user.generate_password_token! # generate pass token
-          UserMailer.forgot_password(user.email).deliver_later # send email
+          # UserMailer.forgot_password(user.email).deliver_later # send email
           render json: { status: 'ok' }, status: :ok
         else
           render json: { error: ['Email address not found. Please check and try again.'] }, status: :not_found
