@@ -60,7 +60,7 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![Rasmga Ol Screenshot](https://github.com/Rustamxon7/rasmga-ol-api/assets/69011963/7fd9df83-11f9-425f-9115-75ea1ed10e63)
 
 Rasmga Ol API is a RESTful API built with Ruby on Rails. It is a backend for a social media application that allows users to create posts, reels, like, comment, and follow other users. The API is built with a modular structure and is easy to understand and use. It is also well documented and has a list of all the available endpoints and their descriptions.
 
