@@ -103,23 +103,9 @@ To get a local copy up and running follow these simple steps.
 
 ### Installation
 
-<!-- 1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/Rustamxon7/rasmga-ol-api.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = "ENTER YOUR API";
-   ``` -->
-
 1. Clone the repo
    ```sh
-    git clone https://github.com/rails-api/active_model_serializers.git
+    git clone https://github.com/Rustamxon7/rasmga-ol-api.git
    ```
 2. Install gems
    ```sh
