@@ -1,7 +1,6 @@
 module Api
   module V1
     class PasswordController < ApplicationController
-      # skip_before_action :authenticate_user!
     
       def forgot
         return render json: { error: 'Email not present' } if params[:email].blank? # check if email is present
