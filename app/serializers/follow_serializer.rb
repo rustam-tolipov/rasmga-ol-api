@@ -1,5 +1,5 @@
 class FollowSerializer < ActiveModel::Serializer
-  attributes :id, :username, :first_name, :last_name, :avatar
+  attributes :id, :username, :first_name, :last_name, :avatar, :is_followed
 
   def avatar
     if object.avatar.present?
@@ -7,5 +7,9 @@ class FollowSerializer < ActiveModel::Serializer
     else
       "https://ui-avatars.com/api/?name=#{object.username}&background=random"
     end
+  end
+
+  def is_followed
+    current_user.followees.include?(object)
   end
 end
