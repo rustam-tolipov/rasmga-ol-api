@@ -1,5 +1,9 @@
 module NotificationHelper
   def notify_user(message, post = nil)
+    if Notification.where(message: message, user_id: post.user_id, sender_id: current_user.id, post_id: post.id).exists?
+      return
+    end
+
     Notification.create(
       {
         message: message,
